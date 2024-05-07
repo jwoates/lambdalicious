@@ -1,22 +1,11 @@
-FROM ruby:3.3.1-alpine3.19
+FROM public.ecr.aws/lambda/ruby:3.2
 
-# Define custom function directory
-ARG FUNCTION_DIR="/function"
+COPY Gemfile Gemfile.lock ${LAMBDA_TASK_ROOT}/
 
-# Install ruby
-# RUN amazon-linux-extras install -y ruby3.2
+RUN gem install bundler:2.4.20 && \
+    bundle config set --local path 'vendor/bundle' && \
+    bundle install
 
-# Install bundler
-RUN gem install bundler
+COPY app.rb ${LAMBDA_TASK_ROOT}/
 
-# Install the Runtime Interface Client
-RUN gem install aws_lambda_ric
-
-# Copy function code
-RUN mkdir -p ${FUNCTION_DIR}
-COPY app.rb ${FUNCTION_DIR}
-
-WORKDIR ${FUNCTION_DIR}
-
-ENTRYPOINT ["/usr/local/bin/aws_lambda_ric"]
-CMD ["app.App::Handler.process"]
+CMD [ "app.App::Handler.process" ]

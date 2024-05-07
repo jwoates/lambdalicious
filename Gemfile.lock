@@ -1,0 +1,14 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    aws_lambda_ric (2.0.0)
+
+PLATFORMS
+  aarch64-linux
+  ruby
+
+DEPENDENCIES
+  aws_lambda_ric (~> 2.0)
+
+BUNDLED WITH
+   2.5.6
